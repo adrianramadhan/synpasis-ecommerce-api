@@ -6,12 +6,14 @@ import (
 	"os"
 
 	"github.com/adrianramadhan/synpasis-ecommerce-api/cmd/rest"
+	"github.com/adrianramadhan/synpasis-ecommerce-api/pkg/config"
 	"github.com/spf13/cobra"
 )
 
 func Start() {
-	rootCmd := &cobra.Command{}
 	_, cancel := context.WithCancel(context.Background())
+	config.LoadEnv(".env")
+	rootCmd := &cobra.Command{}
 
 	quit := make(chan os.Signal)
 	go func() {
