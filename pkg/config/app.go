@@ -9,3 +9,7 @@ func AppPort() string {
 func AppEnv() string {
 	return viper.GetString("APP_ENV")
 }
+
+func JwtSecret() string {
+	return viper.GetString("JWT_SECRET")
+}
