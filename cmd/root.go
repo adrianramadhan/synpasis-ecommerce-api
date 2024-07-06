@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 
+	"github.com/adrianramadhan/synpasis-ecommerce-api/cmd/rest"
 	"github.com/spf13/cobra"
 )
 
@@ -24,7 +24,7 @@ func Start() {
 		Use:   "rest",
 		Short: "Run REST Server",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("Starting REST Server");
+			rest.StartRest()
 		},
 	},
 	}
