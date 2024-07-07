@@ -16,7 +16,8 @@ import (
 )
 
 type Router struct {
-	userHandler *handler.UserHandler
+	userHandler    *handler.UserHandler
+	productHandler *handler.ProductHandler
 }
 
 func NewRouter() *Router {
@@ -25,14 +26,19 @@ func NewRouter() *Router {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
+	// Login and register customers
 	userRepository := repository.NewUser(db)
-
 	userService := service.NewUser(userRepository)
-
 	userHandler := handler.Newuser(userService)
 
+	// Customer can view productlist by product category
+	productRepository := repository.NewProduct(db)
+	productService := service.NewProduct(productRepository)
+	productHandler := handler.NewProduct(productService)
+
 	return &Router{
-		userHandler: userHandler,
+		userHandler:    userHandler,
+		productHandler: productHandler,
 	}
 }
 
@@ -48,12 +54,10 @@ func (r *Router) Init() {
 	e.POST("/auth/login", r.userHandler.Login)
 
 	productGroup := e.Group("/products", middleware.IsAuthenticated())
-	productGroup.GET("", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
-	productGroup.GET("/{id}", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	// productGroup.GET("", func(c echo.Context) error {
+	// 	return c.String(http.StatusOK, "Hello, World!")
+	// })
+	productGroup.GET("/category", r.productHandler.GetProductsByCategory)
 
 	cartGroup := e.Group("/cart", middleware.IsAuthenticated())
 	cartGroup.POST("/items", func(c echo.Context) error {
