@@ -73,7 +73,7 @@ https://hub.docker.com/r/adrianramadhan/ecommerce-api/tags
 ```
 
 ## Contributing
-This project is for demonstration purposes. However, feedback and suggestions are welcome.
+This project is for demonstration and technical test purposes. However, feedback and suggestions are welcome.
 
 ## Contact
 Adrian Putra Ramadhan - adrianramadhan881@gmail.com
