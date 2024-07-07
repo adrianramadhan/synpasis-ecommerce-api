@@ -6,6 +6,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func 'IsAuthenticated() echo.MiddlewareFunc {
+func IsAuthenticated() echo.MiddlewareFunc {
 	return echojwt.JWT([]byte(config.JwtSecret()))
 }
