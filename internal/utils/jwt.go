@@ -62,3 +62,19 @@ func ExtractToken(c echo.Context) (*JWTCustomClaim, error) {
 
 	return nil, errors.New("invalid token")
 }
+
+func GetUserIDFromToken(tokenString string) (uint64, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &JWTCustomClaim{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtSecret), nil
+	})
+
+	if err != nil {
+		return 0, err
+	}
+
+	if claims, ok := token.Claims.(*JWTCustomClaim); ok && token.Valid {
+		return claims.ID, nil
+	}
+
+	return 0, errors.New("invalid token")
+}

@@ -18,6 +18,7 @@ import (
 type Router struct {
 	userHandler    *handler.UserHandler
 	productHandler *handler.ProductHandler
+	cartHandler    *handler.CartHandler
 }
 
 func NewRouter() *Router {
@@ -36,9 +37,15 @@ func NewRouter() *Router {
 	productService := service.NewProduct(productRepository)
 	productHandler := handler.NewProduct(productService)
 
+	// Customer can add product to shopping cart
+	cartRepository := repository.NewCart(db)
+	cartService := service.NewCart(cartRepository, productRepository)
+	cartHandler := handler.NewCart(cartService)
+
 	return &Router{
 		userHandler:    userHandler,
 		productHandler: productHandler,
+		cartHandler:    cartHandler,
 	}
 }
 
@@ -59,10 +66,8 @@ func (r *Router) Init() {
 	// })
 	productGroup.GET("/category", r.productHandler.GetProductsByCategory)
 
-	cartGroup := e.Group("/cart", middleware.IsAuthenticated())
-	cartGroup.POST("/items", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	cartGroup := e.Group("/cart", middleware.IsAuthenticated(), middleware.SetUserID)
+	cartGroup.POST("/add", r.cartHandler.AddToCart)
 	cartGroup.DELETE("/items{id}", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
