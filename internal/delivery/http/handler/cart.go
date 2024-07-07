@@ -22,7 +22,6 @@ func (h *CartHandler) AddToCart(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, "Invalid request body")
 	}
 
-	// Assume we have middleware that sets user ID in context
 	userID := c.Get("user_id").(uint64)
 
 	err := h.service.AddProductToCart(c.Request().Context(), userID, request)
@@ -31,4 +30,15 @@ func (h *CartHandler) AddToCart(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, "Product added to cart successfully")
+}
+
+func (h *CartHandler) GetCartItems(c echo.Context) error {
+	userID := c.Get("user_id").(uint64)
+
+	cartItems, err := h.service.GetCartItems(c.Request().Context(), userID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, cartItems)
 }

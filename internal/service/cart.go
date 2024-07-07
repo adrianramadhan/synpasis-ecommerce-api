@@ -11,6 +11,7 @@ import (
 
 type CartService interface {
 	AddProductToCart(ctx context.Context, userId uint64, request dto.AddToCartRequest) error
+	GetCartItems(ctx context.Context, userId uint64) ([]dto.CartItemResponse, error)
 }
 
 type cartService struct {
@@ -54,4 +55,28 @@ func (s *cartService) AddProductToCart(ctx context.Context, userId uint64, reque
 	}
 
 	return s.cartRepository.AddItem(ctx, cartItem)
+}
+
+func (s *cartService) GetCartItems(ctx context.Context, userId uint64) ([]dto.CartItemResponse, error) {
+	cart, err := s.cartRepository.FindOrCreateByUserId(ctx, userId)
+	if err != nil {
+		return nil, err
+	}
+
+	cartItems, err := s.cartRepository.GetCartItems(ctx, cart.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	var response []dto.CartItemResponse
+	for _, item := range cartItems {
+		response = append(response, dto.CartItemResponse{
+			ProductId:   item.ProductId,
+			ProductName: item.Product.Name,
+			Quantity:    item.Quantity,
+			Price:       item.Product.Price,
+		})
+	}
+
+	return response, nil
 }

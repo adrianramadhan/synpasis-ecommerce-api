@@ -61,35 +61,15 @@ func (r *Router) Init() {
 	e.POST("/auth/login", r.userHandler.Login)
 
 	productGroup := e.Group("/products", middleware.IsAuthenticated())
-	// productGroup.GET("", func(c echo.Context) error {
-	// 	return c.String(http.StatusOK, "Hello, World!")
-	// })
 	productGroup.GET("/category", r.productHandler.GetProductsByCategory)
 
 	cartGroup := e.Group("/cart", middleware.IsAuthenticated(), middleware.SetUserID)
 	cartGroup.POST("/add", r.cartHandler.AddToCart)
-	cartGroup.DELETE("/items{id}", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
-	cartGroup.GET("", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	cartGroup.GET("/items", r.cartHandler.GetCartItems)
 
-	orderGroup := e.Group("/orders", middleware.IsAuthenticated())
-	orderGroup.GET("", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
-	orderGroup.GET("/{id}", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	// orderGroup := e.Group("/orders", middleware.IsAuthenticated())
 
-	paymentsGroup := e.Group("/payments", middleware.IsAuthenticated())
-	paymentsGroup.POST("", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
-	paymentsGroup.GET("/{id}", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	// paymentsGroup := e.Group("/payments", middleware.IsAuthenticated())
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", config.AppPort())))
 }
