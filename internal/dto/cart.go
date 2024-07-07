@@ -11,3 +11,7 @@ type CartItemResponse struct {
 	Quantity    uint8   `json:"quantity"`
 	Price       float64 `json:"price"`
 }
+
+type DeleteFromCartRequest struct {
+	ProductId uint64 `json:"product_id" validate:"required"`
+}

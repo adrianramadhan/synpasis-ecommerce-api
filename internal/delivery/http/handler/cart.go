@@ -42,3 +42,22 @@ func (h *CartHandler) GetCartItems(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, cartItems)
 }
+
+func (h *CartHandler) DeleteFromCart(c echo.Context) error {
+	var request dto.DeleteFromCartRequest
+	if err := c.Bind(&request); err != nil {
+		return c.JSON(http.StatusBadRequest, "Invalid request body")
+	}
+
+	userID := c.Get("user_id").(uint64)
+
+	err := h.service.DeleteProductFromCart(c.Request().Context(), userID, request.ProductId)
+	if err != nil {
+		if err.Error() == "cart item not found" {
+			return c.JSON(http.StatusNotFound, "Cart item not found")
+		}
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, "Product removed from cart successfully")
+}

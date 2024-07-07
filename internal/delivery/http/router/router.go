@@ -66,6 +66,7 @@ func (r *Router) Init() {
 	cartGroup := e.Group("/cart", middleware.IsAuthenticated(), middleware.SetUserID)
 	cartGroup.POST("/add", r.cartHandler.AddToCart)
 	cartGroup.GET("/items", r.cartHandler.GetCartItems)
+	cartGroup.DELETE("/delete", r.cartHandler.DeleteFromCart)
 
 	// orderGroup := e.Group("/orders", middleware.IsAuthenticated())
 

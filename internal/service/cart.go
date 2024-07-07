@@ -12,6 +12,7 @@ import (
 type CartService interface {
 	AddProductToCart(ctx context.Context, userId uint64, request dto.AddToCartRequest) error
 	GetCartItems(ctx context.Context, userId uint64) ([]dto.CartItemResponse, error)
+	DeleteProductFromCart(ctx context.Context, userId uint64, productId uint64) error
 }
 
 type cartService struct {
@@ -79,4 +80,13 @@ func (s *cartService) GetCartItems(ctx context.Context, userId uint64) ([]dto.Ca
 	}
 
 	return response, nil
+}
+
+func (s *cartService) DeleteProductFromCart(ctx context.Context, userId uint64, productId uint64) error {
+	cart, err := s.cartRepository.FindOrCreateByUserId(ctx, userId)
+	if err != nil {
+		return err
+	}
+
+	return s.cartRepository.DeleteCartItem(ctx, cart.Id, productId)
 }
