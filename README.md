@@ -63,8 +63,23 @@ docker-compose up --build
 
 ## Database Schema
 ![synapsis-ecommerce-erd](https://github.com/adrianramadhan/synpasis-ecommerce-api/assets/59206760/5782b168-447f-412a-ad1e-dd875e9640ad)
+Entity Relationships:
+User - Cart: One-to-Many (one user can have multiple shopping carts)
+User - Order: One-to-Many (one user can create multiple orders)
+Category - Product: One-to-Many (one category can have multiple products)
+Cart - CartItem: One-to-Many (one cart can have multiple items)
+Product - CartItem: One-to-Many (one product can be in multiple cart items)
+Cart - Order: One-to-One (one cart can become one order)
+Order - Payment: One-to-One (one order has one payment)
 
-
+Business Process Flow:
+User registers and logs into the application.
+User views Products based on Categories.
+User adds Products to the Cart, creating CartItems.
+User can view and edit CartItems within their Cart.
+When the User checks out, the Cart is converted into an Order.
+User makes a Payment for that Order.
+Order and Payment statuses are updated according to the transaction progress
 
 ## Docker Image
 
