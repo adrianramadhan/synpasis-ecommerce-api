@@ -62,7 +62,8 @@ docker-compose up --build
 2. The API will be available at `http://localhost:8080`
 
 ## Database Schema
-![synapsis-ecommerce-erd](https://github.com/adrianramadhan/synpasis-ecommerce-api/assets/59206760/bc78908a-d3ce-4371-9739-52ba6f90c6aa)
+![synapsis-ecommerce-erd](https://github.com/adrianramadhan/synpasis-ecommerce-api/assets/59206760/5782b168-447f-412a-ad1e-dd875e9640ad)
+
 
 
 ## Docker Image
