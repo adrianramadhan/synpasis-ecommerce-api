@@ -72,6 +72,35 @@ Entity Relationships:
 - Cart - Order: One-to-One (one cart can become one order)
 - Order - Payment: One-to-One (one order has one payment)
 
+## Flowchart
+```mermaid
+flowchart TD
+    subgraph User Journey
+        A[User Registration] --> B[User Login]
+        B --> C[Browse Products by Category]
+        C --> D[Add Products to Cart]
+        D --> E[View/Edit CartItems]
+        E --> F[Checkout]
+        F --> G[Cart Converted to Order]
+        G --> H[Make Payment]
+    end
+
+    subgraph Order Management
+        G --> I[Order Status Updated]
+        H --> J[Payment Status Updated]
+    end
+
+    subgraph Data Relationships
+        User -- "One-to-Many" --> Cart
+        User -- "One-to-Many" --> Order
+        Category -- "One-to-Many" --> Product
+        Cart -- "One-to-Many" --> CartItem
+        Product -- "One-to-Many" --> CartItem
+        Cart -- "One-to-One" --> Order
+        Order -- "One-to-One" --> Payment
+    end
+```
+
 Business Process Flow:
 - User registers and logs into the application.
 - User views Products based on Categories.
